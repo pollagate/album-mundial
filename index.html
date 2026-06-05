@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Álbum del Mundial</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Barlow+Condensed:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A017;
+    --gold-light: #F0C840;
+    --gold-dark: #8B6914;
+    --red: #C0392B;
+    --red-dark: #7B241C;
+    --green: #1A6B2A;
+    --green-light: #27AE60;
+    --white: #FFF8EC;
+    --paper: #F5EDD8;
+    --paper-dark: #E8D9B8;
+    --ink: #1C1C1C;
+    --shadow: rgba(0,0,0,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #1a1a2e;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(212,160,23,0.03) 40px, rgba(212,160,23,0.03) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(212,160,23,0.03) 40px, rgba(212,160,23,0.03) 41px);
+    font-family: 'Barlow Condensed', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── HEADER ── */
+  .album-header {
+    background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 40%, #0d1a0d 100%);
+    border-bottom: 4px solid var(--gold);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-stripe {
+    height: 8px;
+    background: repeating-linear-gradient(90deg, var(--red) 0px, var(--red) 20px, var(--gold) 20px, var(--gold) 40px, var(--green) 40px, var(--green) 60px);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .header-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .ball-icon {
+    width: 52px; height: 52px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 0 0 3px var(--gold), 0 0 0 6px var(--gold-dark);
+    flex-shrink: 0;
+  }
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    color: var(--gold-light);
+    letter-spacing: 6px;
+    line-height: 1;
+    text-shadow: 3px 3px 0 var(--gold-dark), 0 0 40px rgba(212,160,23,0.3);
+  }
+  .header-subtitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(13px, 2.5vw, 17px);
+    letter-spacing: 8px;
+    color: var(--white);
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  .header-stars {
+    color: var(--gold);
+    font-size: 20px;
+    letter-spacing: 6px;
+    margin-top: 4px;
+  }
+
+  /* ── SETUP PANEL ── */
+  .setup-panel {
+    max-width: 700px;
+    margin: 32px auto 0;
+    background: linear-gradient(160deg, var(--paper) 0%, var(--paper-dark) 100%);
+    border-radius: 8px;
+    border: 2px solid var(--gold-dark);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+    padding: 24px 28px;
+  }
+  .setup-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .setup-title::before, .setup-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-dark);
+    opacity: 0.5;
+  }
+  .setup-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .setup-input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 2px solid var(--gold-dark);
+    border-radius: 5px;
+    background: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .setup-input:focus { border-color: var(--gold); }
+  .setup-input::placeholder { color: #aaa; font-style: italic; }
+  .setup-btn {
+    padding: 11px 22px;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    white-space: nowrap;
+  }
+  .setup-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(0,0,0,0.4); }
+  .setup-btn:active { transform: translateY(0); }
+  .setup-hint {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+    line-height: 1.5;
+  }
+  .setup-hint a { color: var(--red-dark); }
+  .setup-hint code {
+    background: rgba(0,0,0,0.07);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    max-width: 1100px;
+    margin: 28px auto 0;
+    padding: 0 20px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: rgba(212,160,23,0.12);
+    border: 1px solid rgba(212,160,23,0.3);
+    border-radius: 30px;
+    padding: 7px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--white);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .stat-pill strong {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .progress-bar-wrap {
+    flex: 1;
+    min-width: 200px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(212,160,23,0.3);
+    border-radius: 30px;
+    padding: 7px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-light), var(--gold-light));
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(.34,1.56,.64,1);
+    width: 0%;
+  }
+  .progress-pct {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    color: var(--gold-light);
+    white-space: nowrap;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    max-width: 1100px;
+    margin: 28px auto 0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-divider span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+  }
+
+  /* ── ALBUM GRID ── */
+  .album-grid {
+    max-width: 1100px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 22px;
+  }
+
+  /* ── STICKER CARD ── */
+  .sticker-card {
+    background: var(--paper);
+    border-radius: 6px;
+    border: 2px solid var(--paper-dark);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+    aspect-ratio: 3/4;
+    display: flex;
+    flex-direction: column;
+  }
+  .sticker-card:hover {
+    transform: translateY(-4px) rotate(-0.5deg);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.5);
+    z-index: 2;
+  }
+  .sticker-card.filled:hover { transform: translateY(-4px) rotate(0.5deg); }
+
+  /* Card header strip */
+  .card-header {
+    background: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 100%);
+    padding: 5px 8px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .card-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+  .card-stars-small {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  /* Image area */
+  .card-img-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #e8d9b8;
+  }
+
+  /* Filled sticker */
+  .sticker-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+  }
+  .sticker-card.filled:hover .sticker-img { transform: scale(1.04); }
+
+  /* Shine overlay on filled */
+  .sticker-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 50%, rgba(255,255,255,0.06) 100%);
+    pointer-events: none;
+  }
+
+  /* Empty sticker */
+  .empty-slot {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(0,0,0,0.03) 8px, rgba(0,0,0,0.03) 9px);
+  }
+  .empty-silhouette {
+    font-size: 42px;
+    opacity: 0.18;
+    filter: grayscale(1);
+  }
+  .empty-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #aaa;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .empty-dots {
+    display: flex; gap: 5px;
+  }
+  .empty-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    border: 1px dashed #ccc;
+  }
+
+  /* Card footer */
+  .card-footer {
+    background: var(--paper-dark);
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding: 4px 8px;
+    flex-shrink: 0;
+  }
+  .card-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.75;
+    text-align: center;
+  }
+
+  /* Loading skeleton */
+  .card-loading .card-img-area {
+    background: linear-gradient(90deg, #e8d9b8 25%, #f0e5cc 50%, #e8d9b8 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* ── ALBUM COVER FEEL ── */
+  .album-book {
+    max-width: 1100px;
+    margin: 28px auto 0;
+    padding: 0 20px;
+  }
+  .album-pages {
+    background: linear-gradient(180deg, #f8f0dc 0%, #f0e5c8 100%);
+    border: 3px solid var(--gold-dark);
+    border-radius: 4px 12px 12px 4px;
+    box-shadow:
+      -8px 0 0 #d4a017,
+      -12px 0 0 #8b6914,
+      -14px 0 0 rgba(0,0,0,0.2),
+      0 8px 32px rgba(0,0,0,0.4);
+    padding: 20px 20px 28px;
+    position: relative;
+  }
+  .album-pages::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: repeating-linear-gradient(180deg, var(--red) 0px, var(--red) 8px, var(--gold) 8px, var(--gold) 16px);
+    border-radius: 4px 0 0 4px;
+  }
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--gold-dark);
+    text-align: center;
+    margin-bottom: 16px;
+    padding-left: 6px;
+  }
+
+  /* ── FOOTER ── */
+  .album-footer {
+    max-width: 1100px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: rgba(212,160,23,0.3);
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1a1a1a;
+    color: var(--gold-light);
+    border: 1px solid var(--gold-dark);
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 600px) {
+    .album-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .header-title { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="album-header">
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div class="header-badge">
+      <div class="ball-icon">⚽</div>
+      <div class="header-title">ÁLBUM</div>
+      <div class="ball-icon">🏆</div>
+    </div>
+    <div class="header-subtitle">Colección Oficial · Edición Mundial</div>
+    <div class="header-stars">★ ★ ★ ★ ★</div>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div class="setup-panel" id="setupPanel">
+  <div class="setup-title">Configurar mi álbum</div>
+  <div class="setup-row">
+    <input class="setup-input" id="driveInput" type="text"
+      placeholder="ID de tu carpeta de Google Drive..."
+      value="">
+    <button class="setup-btn" onclick="loadAlbum()">🔍 Cargar</button>
+  </div>
+  <div class="setup-hint">
+    📌 Pegá el <strong>ID de tu carpeta de Drive</strong> (la parte larga de la URL después de <code>/folders/</code>).<br>
+    La carpeta debe estar configurada como <strong>pública</strong> o compartida con vos.<br>
+    Las fotos deben llamarse <code>lamina_01.jpg</code>, <code>lamina_02.jpg</code> ... <code>lamina_40.jpg</code>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar" id="statsBar" style="display:none">
+  <div class="stat-pill">🖼️ <strong id="statFilled">0</strong> pegadas</div>
+  <div class="stat-pill">⬜ <strong id="statEmpty">40</strong> faltantes</div>
+  <div class="progress-bar-wrap">
+    <span style="color:var(--gold);font-size:12px;letter-spacing:2px;white-space:nowrap">COMPLETADO</span>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-pct" id="progressPct">0%</div>
+  </div>
+</div>
+
+<!-- ALBUM BOOK -->
+<div class="album-book" id="albumBook" style="display:none">
+  <div class="album-pages">
+    <div class="page-title">⚽ &nbsp; COLECCIÓN COMPLETA · 40 LÁMINAS &nbsp; ⚽</div>
+    <div class="album-grid" id="albumGrid"></div>
+  </div>
+</div>
+
+<div class="album-footer" id="albumFooter" style="display:none">
+  <div class="footer-logo">ÁLBUM DEL MUNDIAL · EDICIÓN ESPECIAL</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Nombres de láminas (podés cambiarlos) ──
+const STICKERS = [
+  { num: 1,  name: "Titular 1" },
+  { num: 2,  name: "Titular 2" },
+  { num: 3,  name: "Titular 3" },
+  { num: 4,  name: "Titular 4" },
+  { num: 5,  name: "Titular 5" },
+  { num: 6,  name: "Titular 6" },
+  { num: 7,  name: "Titular 7" },
+  { num: 8,  name: "Titular 8" },
+  { num: 9,  name: "Titular 9" },
+  { num: 10, name: "Titular 10" },
+  { num: 11, name: "Titular 11" },
+  { num: 12, name: "Titular 12" },
+  { num: 13, name: "Titular 13" },
+  { num: 14, name: "Titular 14" },
+  { num: 15, name: "Titular 15" },
+  { num: 16, name: "Titular 16" },
+  { num: 17, name: "Titular 17" },
+  { num: 18, name: "Titular 18" },
+  { num: 19, name: "Titular 19" },
+  { num: 20, name: "Titular 20" },
+  { num: 21, name: "Titular 21" },
+  { num: 22, name: "Titular 22" },
+  { num: 23, name: "Titular 23" },
+  { num: 24, name: "Titular 24" },
+  { num: 25, name: "Titular 25" },
+  { num: 26, name: "Titular 26" },
+  { num: 27, name: "Titular 27" },
+  { num: 28, name: "Titular 28" },
+  { num: 29, name: "Titular 29" },
+  { num: 30, name: "Titular 30" },
+  { num: 31, name: "Titular 31" },
+  { num: 32, name: "Titular 32" },
+  { num: 33, name: "Titular 33" },
+  { num: 34, name: "Titular 34" },
+  { num: 35, name: "Titular 35" },
+  { num: 36, name: "Titular 36" },
+  { num: 37, name: "Titular 37" },
+  { num: 38, name: "Titular 38" },
+  { num: 39, name: "Titular 39" },
+  { num: 40, name: "Titular 40" },
+];
+
+let folderUrl = '';
+
+// Guardamos el folder ID en localStorage para no escribirlo cada vez
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('albumFolderId');
+  if (saved) {
+    document.getElementById('driveInput').value = saved;
+  }
+});
+
+function parseFolderId(input) {
+  input = input.trim();
+  // Si pegaron la URL completa
+  const match = input.match(/\/folders\/([a-zA-Z0-9_-]+)/);
+  if (match) return match[1];
+  // Si pegaron solo el ID
+  if (/^[a-zA-Z0-9_-]{10,}$/.test(input)) return input;
+  return null;
+}
+
+function stickerFilename(num) {
+  return `lamina_${String(num).padStart(2, '0')}.jpg`;
+}
+
+function driveDirectUrl(fileId) {
+  return `https://drive.google.com/uc?export=view&id=${fileId}`;
+}
+
+// Para carpetas públicas, construimos la URL de visualización directa
+// Google no permite listar carpetas sin API key, así que usamos el truco
+// de intentar cargar cada imagen por nombre. Para eso necesitamos el file ID,
+// que no podemos saber sin la API. 
+//
+// ALTERNATIVA PRÁCTICA: el usuario pone los archivos con nombres fijos y
+// usamos la API pública de Drive (sin key) para buscar en carpeta pública.
+// O bien: el usuario nos pasa una hoja de cálculo con los IDs.
+//
+// SOLUCIÓN MÁS SIMPLE Y ROBUSTA:
+// Usamos la Google Drive API v3 con una API Key pública para listar archivos
+// en una carpeta compartida públicamente.
+// El usuario debe configurar su propia API key abajo.
+
+const DRIVE_API_KEY = 'AIzaSyCdbIACK-iH3SxEZItJoaRb1IyucqdgtaU'; // ← reemplazar
+
+async function listDriveFiles(folderId) {
+  const q = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
+  const fields = encodeURIComponent('files(id,name)');
+  const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&key=${DRIVE_API_KEY}&pageSize=100`;
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Drive API error: ${res.status}`);
+  const data = await res.json();
+  return data.files || [];
+}
+
+async function loadAlbum() {
+  const raw = document.getElementById('driveInput').value;
+  const folderId = parseFolderId(raw);
+  if (!folderId) {
+    showToast('⚠️ ID de carpeta inválido');
+    return;
+  }
+
+  localStorage.setItem('albumFolderId', raw);
+  showToast('⏳ Cargando álbum...');
+
+  // Mostrar skeleton mientras carga
+  renderSkeleton();
+  document.getElementById('albumBook').style.display = '';
+  document.getElementById('albumFooter').style.display = '';
+  document.getElementById('statsBar').style.display = '';
+
+  let files = [];
+  try {
+    if (DRIVE_API_KEY === 'TU_API_KEY_AQUI') {
+      // MODO DEMO: sin API key, mostramos el álbum con slots vacíos
+      // y un aviso
+      renderAlbum({});
+      showToast('ℹ️ Configurá tu API Key para cargar fotos reales');
+      return;
+    }
+    files = await listDriveFiles(folderId);
+  } catch(e) {
+    showToast('❌ Error al acceder a Drive. ¿La carpeta es pública?');
+    renderAlbum({});
+    return;
+  }
+
+  // Mapeamos nombre → id
+  const fileMap = {};
+  for (const f of files) {
+    fileMap[f.name.toLowerCase()] = f.id;
+  }
+
+  renderAlbum(fileMap);
+  showToast('✅ ¡Álbum cargado!');
+}
+
+function renderSkeleton() {
+  const grid = document.getElementById('albumGrid');
+  grid.innerHTML = STICKERS.map(s => `
+    <div class="sticker-card card-loading">
+      <div class="card-header">
+        <span class="card-num">#${String(s.num).padStart(2,'0')}</span>
+        <span class="card-stars-small">★★★</span>
+      </div>
+      <div class="card-img-area"></div>
+      <div class="card-footer"><div class="card-name">${s.name}</div></div>
+    </div>
+  `).join('');
+}
+
+function renderAlbum(fileMap) {
+  const grid = document.getElementById('albumGrid');
+  let filled = 0;
+
+  const cards = STICKERS.map(s => {
+    const filename = stickerFilename(s.num);
+    const fileId = fileMap[filename] || fileMap[filename.replace('.jpg','.jpeg')] || fileMap[filename.replace('.jpg','.png')];
+    const numStr = String(s.num).padStart(2, '0');
+    const hasFoto = !!fileId;
+    if (hasFoto) filled++;
+
+    if (hasFoto) {
+      const imgUrl = driveDirectUrl(fileId);
+      return `
+        <div class="sticker-card filled" title="Lámina #${numStr} — ${s.name}">
+          <div class="card-header">
+            <span class="card-num">#${numStr}</span>
+            <span class="card-stars-small">★★★</span>
+          </div>
+          <div class="card-img-area">
+            <img class="sticker-img" src="${imgUrl}"
+              alt="Lámina ${numStr}"
+              onerror="this.parentNode.innerHTML=emptySlotHTML()">
+            <div class="sticker-shine"></div>
+          </div>
+          <div class="card-footer"><div class="card-name">${s.name}</div></div>
+        </div>`;
+    } else {
+      return `
+        <div class="sticker-card empty" title="Lámina #${numStr} — falta conseguir">
+          <div class="card-header">
+            <span class="card-num">#${numStr}</span>
+            <span class="card-stars-small" style="opacity:.3">★★★</span>
+          </div>
+          <div class="card-img-area">
+            <div class="empty-slot">
+              <div class="empty-silhouette">⚽</div>
+              <div class="empty-dots">
+                <div class="empty-dot"></div>
+                <div class="empty-dot"></div>
+                <div class="empty-dot"></div>
+              </div>
+              <div class="empty-label">Lámina<br>faltante</div>
+            </div>
+          </div>
+          <div class="card-footer"><div class="card-name" style="opacity:.4">${s.name}</div></div>
+        </div>`;
+    }
+  });
+
+  grid.innerHTML = cards.join('');
+
+  // Stats
+  const total = STICKERS.length;
+  const pct = Math.round((filled / total) * 100);
+  document.getElementById('statFilled').textContent = filled;
+  document.getElementById('statEmpty').textContent = total - filled;
+  setTimeout(() => {
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }, 100);
+}
+
+function emptySlotHTML() {
+  return `<div class="empty-slot">
+    <div class="empty-silhouette">⚽</div>
+    <div class="empty-label">No cargó</div>
+  </div>`;
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Enter en input
+document.getElementById('driveInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') loadAlbum();
+});
+</script>
+</body>
+</html>
