@@ -275,7 +275,6 @@
     position: relative;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: default;
-    aspect-ratio: 3/4;
     display: flex;
     flex-direction: column;
   }
@@ -309,10 +308,14 @@
 
   /* Image area */
   .card-img-area {
-    flex: 1;
     position: relative;
     overflow: hidden;
     background: #e8d9b8;
+    aspect-ratio: 3/4;
+    width: 100%;
+  }
+  .sticker-card.horizontal .card-img-area {
+    aspect-ratio: 4/3;
   }
 
   /* Filled sticker */
@@ -481,10 +484,10 @@
   <div class="header-inner">
     <div class="header-badge">
       <div class="ball-icon">⚽</div>
-      <div class="header-title">ÁLBUM OFICIAL</div>
+      <div class="header-title">ÁLBUM</div>
       <div class="ball-icon">🏆</div>
     </div>
-    <div class="header-subtitle">Make My Polla Great Again</div>
+    <div class="header-subtitle">Colección Oficial · Edición Mundial</div>
     <div class="header-stars">★ ★ ★ ★ ★</div>
   </div>
 </div>
@@ -521,7 +524,7 @@
 <!-- ALBUM BOOK -->
 <div class="album-book" id="albumBook" style="display:none">
   <div class="album-pages">
-    <div class="page-title">⚽ &nbsp; COLECCIÓN COMPLETA · 40 LÁMINAS &nbsp; ⚽</div>
+    <div class="page-title">⚽ &nbsp; COLECCIÓN COMPLETA · 30 LÁMINAS &nbsp; ⚽</div>
     <div class="album-grid" id="albumGrid"></div>
   </div>
 </div>
@@ -536,46 +539,36 @@
 <script>
 // ── Nombres de láminas (podés cambiarlos) ──
 const STICKERS = [
-  { num: 1,  name: "Titular 1" },
-  { num: 2,  name: "Titular 2" },
-  { num: 3,  name: "Titular 3" },
-  { num: 4,  name: "Titular 4" },
-  { num: 5,  name: "Titular 5" },
-  { num: 6,  name: "Titular 6" },
-  { num: 7,  name: "Titular 7" },
-  { num: 8,  name: "Titular 8" },
-  { num: 9,  name: "Titular 9" },
-  { num: 10, name: "Titular 10" },
-  { num: 11, name: "Titular 11" },
-  { num: 12, name: "Titular 12" },
-  { num: 13, name: "Titular 13" },
-  { num: 14, name: "Titular 14" },
-  { num: 15, name: "Titular 15" },
-  { num: 16, name: "Titular 16" },
-  { num: 17, name: "Titular 17" },
-  { num: 18, name: "Titular 18" },
-  { num: 19, name: "Titular 19" },
-  { num: 20, name: "Titular 20" },
-  { num: 21, name: "Titular 21" },
-  { num: 22, name: "Titular 22" },
-  { num: 23, name: "Titular 23" },
-  { num: 24, name: "Titular 24" },
-  { num: 25, name: "Titular 25" },
-  { num: 26, name: "Titular 26" },
-  { num: 27, name: "Titular 27" },
-  { num: 28, name: "Titular 28" },
-  { num: 29, name: "Titular 29" },
-  { num: 30, name: "Titular 30" },
-  { num: 31, name: "Titular 31" },
-  { num: 32, name: "Titular 32" },
-  { num: 33, name: "Titular 33" },
-  { num: 34, name: "Titular 34" },
-  { num: 35, name: "Titular 35" },
-  { num: 36, name: "Titular 36" },
-  { num: 37, name: "Titular 37" },
-  { num: 38, name: "Titular 38" },
-  { num: 39, name: "Titular 39" },
-  { num: 40, name: "Titular 40" },
+  { num: 1,  name: "Sello" },
+  { num: 2,  name: "Make My Polla Great Again" },
+  { num: 3,  name: "Tomas Leal" },
+  { num: 4,  name: "Nicolas Montanares" },
+  { num: 5,  name: "Daniel Zamorano" },
+  { num: 6,  name: "Gonzalo Alarcon" },
+  { num: 7,  name: "Pablo Arriagada" },
+  { num: 8,  name: "Octavio Cordova" },
+  { num: 9,  name: "Pedro Diaz" },
+  { num: 10, name: "Joaquin Hernandez" },
+  { num: 11, name: "Alejandro Honores" },
+  { num: 12, name: "Matias Miranda" },
+  { num: 13, name: "Jorge Muñoz" },
+  { num: 14, name: "Felipe Olmos" },
+  { num: 15, name: "Alonso Olivares" },
+  { num: 16, name: "Jose Palma" },
+  { num: 17, name: "Tomas Rodriguez" },
+  { num: 18, name: "Javiera Rojas" },
+  { num: 19, name: "Gonzalo Vasquez" },
+  { num: 20, name: "Europolla America" },
+  { num: 21, name: "La Polla de Carlezzo" },
+  { num: 22, name: "La Pollita de Vidal" },
+  { num: 23, name: "Mape" },
+  { num: 24, name: "Gracias Capitan" },
+  { num: 25, name: "Free Pepito" },
+  { num: 26, name: "Caido 1" },
+  { num: 27, name: "Caido 2" },
+  { num: 28, name: "Caido 3" },
+  { num: 29, name: "De que te ries?",horizontal: true },
+  { num: 30, name: "Casi te gano", horizontal: true }
 ];
 
 let folderUrl = '';
@@ -603,7 +596,7 @@ function stickerFilename(num) {
 }
 
 function driveDirectUrl(fileId) {
-  return `https://drive.google.com/thumbnail?id=${fileId}`;
+  return `https://drive.google.com/uc?export=view&id=${fileId}`;
 }
 
 // Para carpetas públicas, construimos la URL de visualización directa
@@ -620,7 +613,7 @@ function driveDirectUrl(fileId) {
 // en una carpeta compartida públicamente.
 // El usuario debe configurar su propia API key abajo.
 
-const DRIVE_API_KEY = 'AIzaSyCdbIACK-iH3SxEZItJoaRb1IyucqdgtaU'; // ← reemplazar
+const DRIVE_API_KEY = 'TU_API_KEY_AQUI'; // ← reemplazar
 
 async function listDriveFiles(folderId) {
   const q = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
@@ -652,7 +645,7 @@ async function loadAlbum() {
 
   let files = [];
   try {
-    if (DRIVE_API_KEY === 'TU_API_KEY_AQUI') {
+    if (DRIVE_API_KEY === 'AIzaSyCdbIACK-iH3SxEZItJoaRb1IyucqdgtaU') {
       // MODO DEMO: sin API key, mostramos el álbum con slots vacíos
       // y un aviso
       renderAlbum({});
@@ -679,7 +672,7 @@ async function loadAlbum() {
 function renderSkeleton() {
   const grid = document.getElementById('albumGrid');
   grid.innerHTML = STICKERS.map(s => `
-    <div class="sticker-card card-loading">
+    <div class="sticker-card card-loading${s.horizontal ? ' horizontal' : ''}">
       <div class="card-header">
         <span class="card-num">#${String(s.num).padStart(2,'0')}</span>
         <span class="card-stars-small">★★★</span>
@@ -704,7 +697,7 @@ function renderAlbum(fileMap) {
     if (hasFoto) {
       const imgUrl = driveDirectUrl(fileId);
       return `
-        <div class="sticker-card filled" title="Lámina #${numStr} — ${s.name}">
+        <div class="sticker-card filled${s.horizontal ? ' horizontal' : ''}" title="Lámina #${numStr} — ${s.name}">
           <div class="card-header">
             <span class="card-num">#${numStr}</span>
             <span class="card-stars-small">★★★</span>
@@ -719,7 +712,7 @@ function renderAlbum(fileMap) {
         </div>`;
     } else {
       return `
-        <div class="sticker-card empty" title="Lámina #${numStr} — falta conseguir">
+        <div class="sticker-card empty${s.horizontal ? ' horizontal' : ''}" title="Lámina #${numStr} — falta conseguir">
           <div class="card-header">
             <span class="card-num">#${numStr}</span>
             <span class="card-stars-small" style="opacity:.3">★★★</span>
