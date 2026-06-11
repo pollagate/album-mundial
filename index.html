@@ -321,12 +321,15 @@
   /* Filled sticker */
   .sticker-img {
     width: 100%; height: 100%;
-    object-fit: contain; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.3s;
   }
   .sticker-card.filled:hover .sticker-img { transform: scale(1.04); }
-
+.sticker-card.horizontal .sticker-img {
+    object-fit: contain;
+    background: var(--paper-dark);
+  }
   /* Shine overlay on filled */
   .sticker-shine {
     position: absolute;
@@ -484,10 +487,10 @@
   <div class="header-inner">
     <div class="header-badge">
       <div class="ball-icon">⚽</div>
-      <div class="header-title">ÁLBUM</div>
+      <div class="header-title">ÁLBUM OFICIAL</div>
       <div class="ball-icon">🏆</div>
     </div>
-    <div class="header-subtitle">Colección Oficial · Edición Mundial</div>
+    <div class="header-subtitle">Make My Polla Great Again</div>
     <div class="header-stars">★ ★ ★ ★ ★</div>
   </div>
 </div>
